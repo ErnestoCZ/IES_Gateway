@@ -16,6 +16,7 @@ services:
     profiles:
       - productive
       - dbcomponent
+      - dbbroker
     
   mongo-express:
     image: mongo-express
@@ -35,17 +36,20 @@ services:
       - debug
       - dbcomponent
       - productive
+      - dbbroker
 
   mqtt-broker:
     image: eclipse-mosquitto
     container_name: IES_MQTT_Broker
     restart: on-failure:10
     volumes:
-      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
     ports:
       - 1883:1883
     profiles:
       - productive
+      - broker
+      - dbbroker
     networks:
       - IESGatewayNet
     
@@ -58,8 +62,9 @@ services:
       - productive
       - mqttclient
     restart: on-failure:10
-    networks:
-      - IESGatewayNet
+    depends_on:
+      - db
+    network_mode: "host"
 
 
 volumes:
