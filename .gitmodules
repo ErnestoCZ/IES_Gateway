@@ -1,0 +1,4 @@
+[submodule "IES_MQTT_Client"]
+	path = IES_MQTT_Client
+	url = git@github.com:ErnestoCZ/IES_MQTT_Client.git
+	branch = master

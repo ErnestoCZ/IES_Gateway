@@ -1,0 +1,72 @@
+services:
+  db:
+    image: mongo
+    container_name: IES_DB_Service
+    restart: on-failure:10
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${DB_INIT_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${DB_INIT_ROOT_PASSWORD}
+    ports:
+      - 27017:27017
+    volumes:
+      - IESMongoDBVolume:/data/db
+      - IESMongoDBConfig:/data/configdb
+    networks:
+      - IESGatewayNet
+    profiles:
+      - productive
+      - dbcomponent
+    
+  mongo-express:
+    image: mongo-express
+    container_name: IES_DBInterface_Service
+    restart: on-failure:10
+    ports:
+      - 8081:8081
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=db
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=${DB_INIT_ROOT_USERNAME}
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=${DB_INIT_ROOT_PASSWORD}
+    depends_on:
+      - db
+    networks:
+      - IESGatewayNet
+    profiles:
+      - debug
+      - dbcomponent
+      - productive
+
+  mqtt-broker:
+    image: eclipse-mosquitto
+    container_name: IES_MQTT_Broker
+    restart: on-failure:10
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+    ports:
+      - 1883:1883
+    profiles:
+      - productive
+    networks:
+      - IESGatewayNet
+    
+  
+  mqtt-client:
+    build: IES_MQTT_Client
+    container_name: IES_MQTT_Client
+    profiles:
+      - debug
+      - productive
+      - mqttclient
+    restart: on-failure:10
+    networks:
+      - IESGatewayNet
+
+
+volumes:
+  IESMongoDBVolume:
+    name: IESMongoDBVolume
+  IESMongoDBConfig:
+    name: IESMongoDBConfig
+networks:
+  IESGatewayNet:
+    name: IESGatewayNetwork
