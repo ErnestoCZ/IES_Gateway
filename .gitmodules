@@ -2,3 +2,6 @@
 	path = IES_MQTT_Client
 	url = git@github.com:ErnestoCZ/IES_MQTT_Client.git
 	branch = master
+[submodule "IES_Gateway_Backend"]
+	path = IES_Gateway_Backend
+	url = git@github.com:ErnestoCZ/IES_Gateway_Backend.git
