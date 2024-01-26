@@ -36,7 +36,7 @@ services:
 
   backend:
     build: IES_Gateway_Backend
-    container_name: IES_Backend
+    container_name: IES_Gateway_Backend
     restart: on-failure:10
     ports:
       - "3000:3000"
