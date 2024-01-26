@@ -8,8 +8,8 @@ services:
     volumes:
       - IESMariaDBVolume:/var/lib/mysql
     profiles:
-      - onlyDatabase
-  
+      - Backend
+
   phpmyadmin:
     image: phpmyadmin
     container_name: IES_phpmyadmin
@@ -21,7 +21,7 @@ services:
     environment:
       - PMA_HOST=mariadb
     profiles:
-      - onlyDatabase
+      - Backend
 
   mqtt-broker:
     image: eclipse-mosquitto
@@ -33,8 +33,18 @@ services:
       - 1883:1883
     networks:
       - IESGatewayNet
-    
-  
+
+  backend:
+    build: IES_Gateway_Backend
+    container_name: IES_Backend
+    restart: on-failure:10
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mariadb
+    profiles:
+      - Backend
+
   mqtt-client:
     build: IES_MQTT_Client
     container_name: IES_MQTT_Client
@@ -46,7 +56,6 @@ services:
     depends_on:
       - mariadb
     network_mode: "host"
-
 
 volumes:
   IESMariaDBVolume:

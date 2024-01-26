@@ -5,3 +5,4 @@
 [submodule "IES_Gateway_Backend"]
 	path = IES_Gateway_Backend
 	url = git@github.com:ErnestoCZ/IES_Gateway_Backend.git
+	branch = master
