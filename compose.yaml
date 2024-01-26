@@ -9,6 +9,8 @@ services:
       - IESMariaDBVolume:/var/lib/mysql
     profiles:
       - Backend
+    networks:
+      - IES_Gateway_Backend_Network
 
   phpmyadmin:
     image: phpmyadmin
@@ -22,6 +24,8 @@ services:
       - PMA_HOST=mariadb
     profiles:
       - Backend
+    networks:
+      - IES_Gateway_Backend_Network
 
   mqtt-broker:
     image: eclipse-mosquitto
@@ -31,8 +35,7 @@ services:
       - ./mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
     ports:
       - 1883:1883
-    networks:
-      - IESGatewayNet
+    network_mode: host
 
   backend:
     build: IES_Gateway_Backend
@@ -44,6 +47,8 @@ services:
       - mariadb
     profiles:
       - Backend
+    networks:
+      - IES_Gateway_Backend_Network
 
   mqtt-client:
     build: IES_MQTT_Client
@@ -55,11 +60,12 @@ services:
     restart: on-failure:10
     depends_on:
       - mariadb
-    network_mode: "host"
 
 volumes:
   IESMariaDBVolume:
     name: IESMariaDBVolume
 networks:
-  IESGatewayNet:
-    name: IESGatewayNetwork
+  IES_Gateway_Backend_Network:
+    name: IES_Gateway_Backend_Network
+  IES_Gateway_Frontend_Network:
+    name: IES_Gateway_Frontend_Network
