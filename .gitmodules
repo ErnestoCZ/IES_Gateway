@@ -6,3 +6,7 @@
 	path = IES_Gateway_Backend
 	url = git@github.com:ErnestoCZ/IES_Gateway_Backend.git
 	branch = master
+[submodule "IES_CoAP_Client"]
+	path = IES_CoAP_Client
+	url = git@github.com:ErnestoCZ/IES_CoAP_Client.git
+	branch = main
