@@ -10,8 +10,8 @@ This Project provides a software solution for easy data collection of IoT Sensor
 
 ## Config
 
-mosquitto.conf          : holds the configuration for the MQTT Broker
-.env                    : holds the envirionment variables for setup the Gateway components
+- mosquitto.conf          : holds the configuration for the MQTT Broker
+- .env                    : holds the envirionment variables for setup the Gateway components
 
 ## HOW TO RUN
 
